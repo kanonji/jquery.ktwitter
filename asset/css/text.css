@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+body{
+  color:#666;
+  font-size:small;
+  text-shadow: #666 0px 0px 0.15em;
+}
+a{
+  font-family: 'Inconsolata', arial, serif;
+  word-break: break-all;
+}
+a:link {
+  color:#333;
+}
+a:visited {
+  color:#666;
+}
+a:hover, a:focus, a:active {
+  color:#666;
+}
+a.mail{}
+a.tel{}
+a.pdf{}
+a.external{}
+a.internal{}
+a.namedAnchor{}
+a.more{}
+a.pagetop{}
+
+h1{}
+h2{}
+h3{}
+h4{}
+h5{}
+h6{}
+
+.date{}
+.caption{}
+.lead{}
+.note{}
+
+/* vim: set ts=2 sw=2 sts=2 et ff=unix ft=css : */

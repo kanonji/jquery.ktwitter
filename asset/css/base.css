@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+#container{
+  margin:0 auto;
+  padding: 32px 8px 8px 8px;
+  width:750px;
+}
+
+nav{
+  width:400px;
+  margin:0 auto;
+  margin-top:16px;
+}
+  nav a{
+    font-size:larger;
+  }
+
+section{
+  width:400px;
+  margin:0 auto;
+}
+  section article{
+    padding-bottom:7px;
+    background: transparent url("data:image/png;base64,R0lGODlhSAABAIAAAP///2ZmZiH5BAEHAAAALAAAAABIAAEAAAINDG54kLwNn1TU1XhXAQA7") repeat-x left bottom;
+  }
+  section article.last{
+    background: none;
+  }
+
+nav ul, ul.widgetMenu{
+  margin:0;
+  padding:0;
+}
+nav ul li, ul.widgetMenu li{
+  display:-moz-inline-box; /* Fx2用のinline-block */
+  display:inline-block;
+  *display:inline; /* http://centricle.com/ref/css/filters/tests/asterisk/ */
+  margin:0;
+  padding: 0.2em 0.4em;
+}
+  nav ul li a, ul.widgetMenu li a{
+    display:-moz-inline-box; /* Fx2用のinline-block */
+    display:inline-block;
+    *display:inline; /* http://centricle.com/ref/css/filters/tests/asterisk/ */
+    *zoom:1; /* http://centricle.com/ref/css/filters/tests/asterisk/ */
+  }
+/* vim: set ts=2 sw=2 sts=2 et ff=unix ft=css : */
