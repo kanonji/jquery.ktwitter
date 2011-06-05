@@ -30,6 +30,7 @@
 
 <section>
   <h1>Section title</h1>
+  <div id="twitter"></div>
 </section>
 
 <aside>
@@ -48,6 +49,10 @@
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
+<script src="asset/js/jquery.ktwitter.js"></script>
+<script>
+  $('#twitter').ktwitter({screen_name: 'kanonji'});
+</script>
 <script type="text/javascript">
 try {
 var pageTracker = _gat._getTracker("");
@@ -55,4 +60,4 @@ pageTracker._trackPageview();
 } catch(err) {}</script>
 </body>
 </html>
-<!--vim: set ts=2 sw=2 sts=2 et ff=unix ft=html : -->
+<!-- vim: set ts=2 sw=2 sts=2 et ff=unix ft=html : -->
