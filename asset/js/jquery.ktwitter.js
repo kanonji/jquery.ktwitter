@@ -4,42 +4,49 @@
     count: 10,
   };
   var methods = {
-    init: function( options ){
-      return this.each( function(){
+    init: function( options ) {
+      this.each( function(){
         if ( options ) {
+          console.info(options);
           extend( settings, options );
+          console.info(settings);
         }
-        methods.load();
       });
+      console.info(this);
+      return methods.load.apply( this, arguments );
     },
-    load: function( options ){
-      return this.each(){
+    load: function( options ) {
+      console.info(this);
+      return this.each(function(){
         if ( options ) {
           extend( settings, options );
         }
+        var element = this;
         $.getJSON('http://api.twitter.com/1/statuses/user_timeline.json?callback=?', {
           screen_name: settings.screen_name,
           count: settings.count
         }, function( result ){
-          $(this).ktwitter = result;
+          element.ktwitters = result;
         });
-      };
+      });
     },
-    reload: function(){
-      return this.each(){
+    reload: function() {
+      return this.each(function(){
         //TODO stab
-      };
-    },
+      });
+    }
   };
 
-  var extend = function( options ) {
-    $.extend( settings, options );
-  }
+  var extend = function( settings, options ) {
+    return $.extend( settings, options );
+  };
 
   $.fn.ktwitter = function( method ){
-    if ( methods ) {
+    if ( methods[method] ) {
+      console.log(this);
       return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ) );
     } else if ( typeof method === 'object' || ! method ) {
+      console.log(this);
       return methods.init.apply( this, arguments );
     } else {
       $.error( 'Method ' + method + 'does not exist on jQuery.ktwitter' );
