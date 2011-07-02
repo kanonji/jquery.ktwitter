@@ -14,7 +14,7 @@
         }
       });
       if ( settings.render )
-        method.setRender.call( this, settings.render );
+        methods.setRender.call( this, settings.render );
       if ( settings.autoLoad )
         return methods.load.apply( this, arguments );
     },
