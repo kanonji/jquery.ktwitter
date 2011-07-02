@@ -2,40 +2,35 @@
   var settings = {
     screen_name: undefined,
     count: 10,
-    //autoLoad: true,
-    //autoRender: true,
+    autoLoad: true,
+    autoRender: true,
     //render: function(){}
   };
   var methods = {
     init: function( options ) {
       this.each( function(){
         if ( options ) {
-          console.info(options);
           extend( settings, options );
-          console.info(settings);
         }
       });
-      console.info(this);
-      console.info(arguments);
-      return methods.load.apply( this, arguments );
+      if ( settings.render )
+        method.setRender.call( this, settings.render );
+      if ( settings.autoLoad )
+        return methods.load.apply( this, arguments );
     },
     load: function( options ) {
-      console.info(this);
-      console.info(arguments);
       return this.each(function(){
         if ( options ) {
           extend( settings, options );
         }
         self = this;
-        console.info(this);
-        console.info(arguments);
         $.getJSON('http://api.twitter.com/1/statuses/user_timeline.json?callback=?', {
           screen_name: settings.screen_name,
           count: settings.count
         }, function( result ){
-          console.info(result);
-          console.info(arguments);
-          _render.call( $(self), result);
+          self.ktwitter = result;
+          if ( settings.autoRender )
+            _render.call( $(self), result);
         });
       });
     },
@@ -44,9 +39,13 @@
         //TODO stab
       });
     },
-    rerender: function() {
-      //TODO stab
-      return this;
+    rerender: function( func ) {
+      if ( func )
+        methods.setRender.call(this, func);
+      return this.each(function(){
+        $(this).empty();
+        _render.call( $(this), this.ktwitter );
+      });
     },
     setRender: function( func ){
       _render = func;
@@ -59,7 +58,6 @@
   };
 
   var _render = function(data) {
-      console.info(this);
       var ul = $('<ul>');
       var template = '<li class="clearfix"><img src="{{icon}}" class="picture"><div class="text"><p class="tweet"><span>{{screen_name}}</span>{{text}}</p><p class="date">{{datetime}}</p></div></li>';
       var item;
@@ -111,10 +109,8 @@
 
   $.fn.ktwitter = function( method ){
     if ( methods[method] ) {
-      console.log(this);
       return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ) );
     } else if ( typeof method === 'object' || ! method ) {
-      console.log(this);
       return methods.init.apply( this, arguments );
     } else {
       $.error( 'Method ' + method + 'does not exist on jQuery.ktwitter' );
