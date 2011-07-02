@@ -51,7 +51,10 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 </script>
 <script src="asset/js/jquery.ktwitter.js"></script>
 <script>
-  $('#twitter').ktwitter({screen_name: 'kanonji'});
+$(function(){
+  var func = function(data){console.info(data);};
+  $('#twitter').ktwitter('setRender', func).ktwitter({screen_name: 'kanonji'});
+});
 </script>
 <script type="text/javascript">
 try {

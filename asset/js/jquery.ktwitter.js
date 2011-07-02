@@ -2,6 +2,9 @@
   var settings = {
     screen_name: undefined,
     count: 10,
+    //autoLoad: true,
+    //autoRender: true,
+    //render: function(){}
   };
   var methods = {
     init: function( options ) {
@@ -18,18 +21,21 @@
     },
     load: function( options ) {
       console.info(this);
-      var $this = this;
+      console.info(arguments);
       return this.each(function(){
         if ( options ) {
           extend( settings, options );
         }
-        var element = this;
+        self = this;
+        console.info(this);
+        console.info(arguments);
         $.getJSON('http://api.twitter.com/1/statuses/user_timeline.json?callback=?', {
           screen_name: settings.screen_name,
           count: settings.count
         }, function( result ){
-          element.ktwitters = result;
-          methods.render.apply( $this, arguments );
+          console.info(result);
+          console.info(arguments);
+          _render.call( $(self), result);
         });
       });
     },
@@ -38,10 +44,22 @@
         //TODO stab
       });
     },
-    render: function(){
+    rerender: function() {
+      //TODO stab
+      return this;
+    },
+    setRender: function( func ){
+      _render = func;
+      return this;
+    }
+  };
+
+  var extend = function( settings, options ) {
+    return $.extend( settings, options );
+  };
+
+  var _render = function(data) {
       console.info(this);
-      console.info(arguments);
-      var data = this.get(0).ktwitters;
       var ul = $('<ul>');
       var template = '<li class="clearfix"><img src="{{icon}}" class="picture"><div class="text"><p class="tweet"><span>{{screen_name}}</span>{{text}}</p><p class="date">{{datetime}}</p></div></li>';
       var item;
@@ -52,17 +70,9 @@
           text: data[i].text,
           datetime: _relative_time(data[i].created_at)
         };
-        ul.append(_render(item, template));
+        ul.append( _apply(item, template) );
       }
       this.append(ul);
-    },
-    setRender: function( func ){
-      methods.render = func;
-    }
-  };
-
-  var extend = function( settings, options ) {
-    return $.extend( settings, options );
   };
 
   function _relative_time(time_value) {
@@ -90,7 +100,7 @@
     }
   }
 
-  function _render(item, template){
+  function _apply(item, template){
     for(var key in item){
       item[key] = (item[key] === undefined) ? '' : item[key];
       var rgx = new RegExp('{{' + key + '}}', 'g');
