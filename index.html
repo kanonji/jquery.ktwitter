@@ -52,8 +52,23 @@ document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.
 <script src="asset/js/jquery.ktwitter.js"></script>
 <script>
 $(function(){
+  var render = function(data){
+    var ul = $('<ul>');
+    var template = '<li><p class="tweet"><span>{{screen_name}}</span>{{text}}</p><p class="date">{{datetime}}</p></li>';
+    var item;
+    for( var i in data ){
+      item = {
+        icon: data[i].user.profile_image_url,
+        screen_name: data[i].user.screen_name,
+        text: data[i].text,
+        datetime: this.ktwitter.relativeTime(data[i].created_at)
+      };
+      ul.append( this.ktwitter.apply(item, template) );
+    }
+    $(this).append(ul);
+  };
   //var func = function(data){console.info(data);};
-  //$('#twitter').ktwitter('setRender', func).ktwitter({screen_name: 'kanonji'});
+  //$('#twitter').ktwitter('setRender', render).ktwitter({screen_name: 'kanonji'});
   $('#twitter').ktwitter({screen_name: 'kanonji'});
 });
 </script>

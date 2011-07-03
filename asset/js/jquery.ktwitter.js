@@ -12,6 +12,10 @@
         if ( options ) {
           extend( settings, options );
         }
+        this.ktwitter = {};
+        this.ktwitter.apply = _apply;
+        this.ktwitter.relativeTime = _relativeTime;
+
       });
       if ( settings.render )
         methods.setRender.call( this, settings.render );
@@ -28,9 +32,9 @@
           screen_name: settings.screen_name,
           count: settings.count
         }, function( result ){
-          self.ktwitter = result;
+          extend( self.ktwitter, result );
           if ( settings.autoRender )
-            _render.call( $(self), result);
+            _render.call( self, result);
         });
       });
     },
@@ -44,7 +48,7 @@
         methods.setRender.call(this, func);
       return this.each(function(){
         $(this).empty();
-        _render.call( $(this), this.ktwitter );
+        _render.call( this, this.ktwitter );
       });
     },
     setRender: function( func ){
@@ -66,14 +70,14 @@
           icon: data[i].user.profile_image_url,
           screen_name: data[i].user.screen_name,
           text: data[i].text,
-          datetime: _relative_time(data[i].created_at)
+          datetime: this.ktwitter.relativeTime(data[i].created_at)
         };
-        ul.append( _apply(item, template) );
+        ul.append( this.ktwitter.apply(item, template) );
       }
-      this.append(ul);
+      $(this).append(ul);
   };
 
-  function _relative_time(time_value) {
+  var _relativeTime = function(time_value) {
     var values = time_value.split(" ");
     time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
     var parsed_date = Date.parse(time_value);
@@ -98,7 +102,7 @@
     }
   }
 
-  function _apply(item, template){
+  var _apply = function(item, template){
     for(var key in item){
       item[key] = (item[key] === undefined) ? '' : item[key];
       var rgx = new RegExp('{{' + key + '}}', 'g');
