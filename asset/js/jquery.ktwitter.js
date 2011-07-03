@@ -54,6 +54,10 @@
     setRender: function( func ){
       _render = func;
       return this;
+    },
+    destroy: function(){
+      //TODO stab
+      return this;
     }
   };
 
