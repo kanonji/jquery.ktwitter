@@ -2,15 +2,15 @@
   var settings = {
     screen_name: undefined,
     count: 10,
+    //render: function(){},
     autoLoad: true,
-    autoRender: true,
-    //render: function(){}
+    autoRender: true
   };
   var methods = {
     init: function( options ) {
       this.each( function(){
         if ( options ) {
-          extend( settings, options );
+          $.extend( settings, options );
         }
         this.ktwitter = {};
         this.ktwitter.apply = _apply;
@@ -25,14 +25,14 @@
     load: function( options ) {
       return this.each(function(){
         if ( options ) {
-          extend( settings, options );
+          $.extend( settings, options );
         }
-        self = this;
+        var self = this;
         $.getJSON('http://api.twitter.com/1/statuses/user_timeline.json?callback=?', {
           screen_name: settings.screen_name,
           count: settings.count
         }, function( result ){
-          extend( self.ktwitter, result );
+          $.extend( self.ktwitter, result );
           if ( settings.autoRender )
             _render.call( self, result);
         });
@@ -61,10 +61,6 @@
     }
   };
 
-  var extend = function( settings, options ) {
-    return $.extend( settings, options );
-  };
-
   var _render = function(data) {
       var ul = $('<ul>');
       var template = '<li class="clearfix"><img src="{{icon}}" class="picture"><div class="text"><p class="tweet"><span>{{screen_name}}</span>{{text}}</p><p class="date">{{datetime}}</p></div></li>';
@@ -86,7 +82,7 @@
     time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
     var parsed_date = Date.parse(time_value);
     var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
-    var delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
+    var delta = parseInt((relative_to.getTime() - parsed_date) / 1000, 10);
     delta = delta + (relative_to.getTimezoneOffset() * 60);
 
     if (delta < 60) {
@@ -94,17 +90,17 @@
     } else if(delta < 120) {
       return 'about a minute ago';
     } else if(delta < (60*60)) {
-      return (parseInt(delta / 60)).toString() + ' minutes ago';
+      return (parseInt(delta / 60, 10)).toString() + ' minutes ago';
     } else if(delta < (120*60)) {
       return 'about an hour ago';
     } else if(delta < (24*60*60)) {
-      return 'about ' + (parseInt(delta / 3600)).toString() + ' hours ago';
+      return 'about ' + (parseInt(delta / 3600, 10)).toString() + ' hours ago';
     } else if(delta < (48*60*60)) {
       return '1 day ago';
     } else {
-      return (parseInt(delta / 86400)).toString() + ' days ago';
+      return (parseInt(delta / 86400, 10)).toString() + ' days ago';
     }
-  }
+  };
 
   var _apply = function(item, template){
     for(var key in item){
@@ -113,7 +109,7 @@
       template = template.replace(rgx, item[key]);
     }
     return template;
-  }
+  };
 
   $.fn.ktwitter = function( method ){
     if ( methods[method] ) {
